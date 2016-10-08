@@ -17,22 +17,24 @@ public class MySettings extends AppCompatActivity {
     TextView ram;
     TextView temp;
     Settings mySettings;
-    String port;
+    String IP;
+    String mach_name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_settings);
-        port = getIntent().getStringExtra("port_number");
+        IP = getIntent().getStringExtra("port_number");
+        mach_name = getIntent().getStringExtra("mach_name");
         core = (TextView) findViewById(R.id.maxCore);
         ram = (TextView) findViewById(R.id.maxRam);
         temp = (TextView) findViewById(R.id.maxTemp);
         setTitle("Settings");
-        File file = new File(getFilesDir() + "/" + port + ".bin");
+        File file = new File(getFilesDir() + "/" + IP + ".bin");
         if(file.exists()) {
             try {
                 System.out.println("restoring from binary");
-                FileInputStream fis = openFileInput(port + ".bin");
+                FileInputStream fis = openFileInput(IP + ".bin");
                 ObjectInputStream ois = new ObjectInputStream(fis);
                 mySettings = (Settings) ois.readObject();
                 ois.close();
@@ -59,9 +61,10 @@ public class MySettings extends AppCompatActivity {
             tempSettings.max_temp = temp.getText().toString();
             tempSettings.max_ram = ram.getText().toString();
             tempSettings.max_core = core.getText().toString();
-            tempSettings.IP = port;
+            tempSettings.IP = IP;
+            tempSettings.mach_name = mach_name;
 
-            FileOutputStream fos = openFileOutput(port + ".bin", MODE_PRIVATE);
+            FileOutputStream fos = openFileOutput(IP + ".bin", MODE_PRIVATE);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(tempSettings);
             oos.flush();
@@ -73,7 +76,8 @@ public class MySettings extends AppCompatActivity {
             System.out.println(e.getMessage());
         }
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("port_number", port);
+        intent.putExtra("port_number", IP);
+        intent.putExtra("mach_name", mach_name);
         startActivity(intent);
         finish();
     }

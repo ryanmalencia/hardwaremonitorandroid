@@ -19,58 +19,20 @@ public class StartupActivity extends AppCompatActivity implements View.OnClickLi
 
     LinearLayout layout;
     private MyDatagramReceiver myDatagramReceiver = null;
-    private List<String> lastPort;
+    private List<String> last_IP;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        lastPort = new ArrayList<>();
+        last_IP = new ArrayList<>();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_startup);
         layout = (LinearLayout)findViewById(R.id.startup_layout);
         myDatagramReceiver = new MyDatagramReceiver();
         myDatagramReceiver.start();
-        /*
-        for(File temp : files)
-        {
-            if(temp.getName().contains(".bin")) {
-                Intent intent = new Intent(this, MainActivity.class);
-                String port;
-                Settings mySettings = new Settings();
-                try{
-                    FileInputStream fis = openFileInput(temp.getName());
-                    ObjectInputStream ois = new ObjectInputStream(fis);
-                    mySettings = (Settings) ois.readObject();
-                    ois.close();
-                }catch(IOException e)
-                {
-                    System.out.println("Error reading settings file");
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-                port = mySettings.IP;
-                intent.putExtra("port_number",port);
-                startActivity(intent);
-                finish();
-                break;
-            }
-        }
-        */
     }
 
     public void onClick(View view)
     {
-        /*String port = ((EditText)findViewById(R.id.editText)).getText().toString();
-        if(port.split("\\.").length >= 4) {
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra("port_number", port);
-            startActivity(intent);
-            finish();
-        }
-        else
-        {
-
-        }
-        */
     }
 
 
@@ -107,25 +69,29 @@ public class StartupActivity extends AppCompatActivity implements View.OnClickLi
     private Runnable updateTextMessage = new Runnable() {
         public void run() {
         if (myDatagramReceiver == null) return;
-        final String port = myDatagramReceiver.getLastMessage();
-        if(lastPort.size() == 0)
+        String receivedMessage = myDatagramReceiver.getLastMessage();
+        final String IP = receivedMessage.split(":")[0];
+        final String name = receivedMessage.split(":")[1];
+        if(last_IP.size() == 0)
         {
             layout.removeAllViews();
         }
-        if (!lastPort.contains(port)) {
+        if (!last_IP.contains(IP)) {
             Button button = new Button(getApplicationContext());
-            button.setText(port);
+            button.setText(name);
             button.setOnClickListener(new View.OnClickListener() {
                   @Override
                   public void onClick(View v) {
-                      if (port.split("\\.").length >= 4) {
+                      if (IP.split("\\.").length >= 4) {
 
-                          File file = new File(port.replace(".", "") + ".bin");
+                          File file = new File(IP.replace(".", "") + ".bin");
 
                           if(!file.exists()) {
                               try {
                                   Settings settings = new Settings();
-                                  FileOutputStream fos = openFileOutput(port + ".bin", MODE_PRIVATE);
+                                  settings.mach_name = name;
+                                  settings.IP = IP;
+                                  FileOutputStream fos = openFileOutput(IP + ".bin", MODE_PRIVATE);
                                   ObjectOutputStream oos = new ObjectOutputStream(fos);
                                   oos.writeObject(settings);
                                   oos.flush();
@@ -136,18 +102,19 @@ public class StartupActivity extends AppCompatActivity implements View.OnClickLi
                           }
 
                           Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                          intent.putExtra("port_number", port);
+                          intent.putExtra("port_number", IP);
+                          intent.putExtra("mach_name",name);
                           startActivity(intent);
                           finish();
                       } else {
-                            System.out.println("Bad port number");
+                            System.out.println("Bad IP number");
                       }
                   }
                 }
             );
             layout.addView(button);
         }
-        lastPort.add(port);
+        last_IP.add(IP);
         }
     };
 }

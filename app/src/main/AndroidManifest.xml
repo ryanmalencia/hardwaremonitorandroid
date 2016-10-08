@@ -22,7 +22,6 @@
         </activity>
         <activity android:name=".MySettings" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".ListSettings"></activity>
     </application>
 
 </manifest>

@@ -8,6 +8,7 @@ class Settings implements Serializable{
     String max_core;
     String max_ram;
     String IP;
+    String mach_name;
     private static final long serialVersionUID = 12345678;
 
     Settings()
@@ -16,5 +17,6 @@ class Settings implements Serializable{
         max_core = "1000";
         max_ram = "16384";
         IP = "10.0.0.1";
+        mach_name = "New Machine";
     }
 }

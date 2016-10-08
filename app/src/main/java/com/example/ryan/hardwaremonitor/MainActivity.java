@@ -21,45 +21,28 @@ public class MainActivity extends AppCompatActivity {
     private int max_ram;
     private int max_temp;
     private Settings mySettings;
-    private String port;
+    private String IP;
+    private String mach_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        port = getIntent().getStringExtra("port_number");
-        File file = new File(getFilesDir() + "/" + port + ".bin");
-        if(!file.exists()) {
-            try {
+        IP = getIntent().getStringExtra("port_number");
+        mach_name = getIntent().getStringExtra("mach_name");
 
-                mySettings = new Settings();
-                mySettings.IP = port;
-                FileOutputStream fos = openFileOutput(port + ".bin", MODE_PRIVATE);
-                ObjectOutputStream oos = new ObjectOutputStream(fos);
-                oos.writeObject(mySettings);
-                oos.flush();
-                oos.close();
-
-            }catch(IOException e)
-            {
-                System.out.println("Serialization gone bad");
-                System.out.println(e.getMessage());
-            }
+        try {
+            System.out.println("restoring from binary");
+            FileInputStream fis = openFileInput(IP + ".bin");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            mySettings = (Settings) ois.readObject();
+            ois.close();
         }
-        else
+        catch(Exception e)
         {
-            try {
-                System.out.println("restoring from binary");
-                FileInputStream fis = openFileInput(port+ ".bin");
-                ObjectInputStream ois = new ObjectInputStream(fis);
-                mySettings = (Settings) ois.readObject();
-                ois.close();
-            }
-            catch(Exception e)
-            {
-                System.out.println("File not found");
-            }
+            System.out.println("File not found");
         }
+
 
         max_clock = Integer.parseInt(mySettings.max_core);
         max_ram = Integer.parseInt(mySettings.max_ram);
@@ -86,13 +69,15 @@ public class MainActivity extends AppCompatActivity {
 
     //call to get data
     public void MachData() {
-        new GetData().execute("MachData",port);
+        new GetData().execute("MachData", IP);
     }
 
     //open settings activity and finish this activity
     public void openSettings(MenuItem item)
     {
-        Intent intent = new Intent(this, ListSettings.class);
+        Intent intent = new Intent(this, MySettings.class);
+        intent.putExtra("port_number", IP);
+        intent.putExtra("mach_name", mach_name);
         startActivity(intent);
         finish();
     }
@@ -118,10 +103,10 @@ public class MainActivity extends AppCompatActivity {
                         return fromServer;
                 }
             } catch (UnknownHostException e) {
-                System.err.println("Don't know about host " + "10.0.0.116");
+                System.err.println("Don't know about host " + port);
                 return "Bad hostname";
             } catch (IOException e) {
-                System.err.println("Couldn't get I/O for the connection to 10.0.0.116");
+                System.err.println("Couldn't get I/O for the connection to " + port);
                 return "No connection to server";
             }
             return "Oops";
