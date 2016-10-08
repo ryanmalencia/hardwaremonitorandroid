@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         max_ram = Integer.parseInt(mySettings.max_ram);
         max_temp = Integer.parseInt(mySettings.max_temp);
 
-        new CountDownTimer(3600000, 1000) {
+        new CountDownTimer(3600000, 1500) {
 
             public void onTick(long millisUntilFinished) {
 
@@ -94,22 +94,31 @@ public class MainActivity extends AppCompatActivity {
                 Socket kkSocket = new Socket()
             ){
                 kkSocket.connect(new InetSocketAddress(port,9999), 1000);
-                PrintWriter out = new PrintWriter(kkSocket.getOutputStream(), true);
-                BufferedReader in = new BufferedReader(new InputStreamReader(kkSocket.getInputStream()));
-                String fromServer;
-                out.println(input[0]);
-                while ((fromServer = in.readLine()) != null) {
-                    if (!fromServer.equals(""))
-                        return fromServer;
+                //PrintWriter out = new PrintWriter(kkSocket.getOutputStream(), true);
+                InputStream in = kkSocket.getInputStream();
+                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+
+                byte[] bytes = new byte[1024];
+
+                int count;
+                while((count = in.read(bytes,0,bytes.length)) != -1)
+                {
+                    buffer.write(bytes,0,count);
                 }
+
+                buffer.flush();
+
+                return new String(buffer.toByteArray());
             } catch (UnknownHostException e) {
                 System.err.println("Don't know about host " + port);
                 return "Bad hostname";
             } catch (IOException e) {
                 System.err.println("Couldn't get I/O for the connection to " + port);
                 return "No connection to server";
+            } catch(Exception e) {
+                System.err.println("Oops");
+                return "Oops";
             }
-            return "Oops";
         }
         protected void onPostExecute(String input) {
             if(the_input.equals("MachData"))
