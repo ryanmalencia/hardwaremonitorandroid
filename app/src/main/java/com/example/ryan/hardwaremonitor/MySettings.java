@@ -3,7 +3,7 @@ package com.example.ryan.hardwaremonitor;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.KeyEvent;
+import android.view.View;
 import android.widget.TextView;
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,6 +24,14 @@ public class MySettings extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_settings);
+        try{
+            //noinspection ConstantConditions
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        catch(java.lang.NullPointerException e)
+        {
+            System.out.println("Could not set action bar back button");
+        }
         IP = getIntent().getStringExtra("port_number");
         mach_name = getIntent().getStringExtra("mach_name");
         core = (TextView) findViewById(R.id.maxCore);
@@ -53,7 +61,7 @@ public class MySettings extends AppCompatActivity {
         temp.setText(mySettings.max_temp);
     }
 
-    private void saveSettings()
+    public void saveSettings(View view)
     {
         try {
             Settings tempSettings = new Settings();
@@ -82,12 +90,12 @@ public class MySettings extends AppCompatActivity {
         finish();
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)  {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-            saveSettings();
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
+    public void cancelSettings(View view)
+    {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("port_number", IP);
+        intent.putExtra("mach_name", mach_name);
+        startActivity(intent);
+        finish();
     }
 }

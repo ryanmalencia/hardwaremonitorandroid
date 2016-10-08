@@ -35,8 +35,6 @@ public class StartupActivity extends AppCompatActivity implements View.OnClickLi
     {
     }
 
-
-
     private class MyDatagramReceiver extends Thread {
         private boolean bKeepRunning = true;
         private String lastMessage = "";
@@ -84,7 +82,7 @@ public class StartupActivity extends AppCompatActivity implements View.OnClickLi
                   public void onClick(View v) {
                       if (IP.split("\\.").length >= 4) {
 
-                          File file = new File(IP.replace(".", "") + ".bin");
+                          File file = new File(getFilesDir() + "/" +IP + ".bin");
 
                           if(!file.exists()) {
                               try {

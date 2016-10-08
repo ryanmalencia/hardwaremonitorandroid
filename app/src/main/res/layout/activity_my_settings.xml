@@ -82,4 +82,26 @@
             android:text="100" />
     </RelativeLayout>
 
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:layout_columnWeight="1"
+            android:layout_gravity="bottom"
+            android:onClick="cancelSettings"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save"
+            android:onClick="saveSettings"
+            android:layout_columnWeight="1"
+            android:layout_gravity="bottom" />
+    </GridLayout>
+
 </LinearLayout>
