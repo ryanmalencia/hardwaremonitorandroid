@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private int max_clock;
     private int max_ram;
     private int max_temp;
+    private int mem_clock;
     private Settings mySettings;
     private String IP;
     private String mach_name;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         max_clock = Integer.parseInt(mySettings.max_core);
         max_ram = Integer.parseInt(mySettings.max_ram);
         max_temp = Integer.parseInt(mySettings.max_temp);
+        mem_clock = Integer.parseInt(mySettings.max_mem);
 
         new CountDownTimer(3600000, 1500) {
 
@@ -243,6 +245,29 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         int usage_int = (int)(usage_double*100)/ max_clock;
+
+                        if(usage_int > 65)
+                        {
+                            usage.setProgressTintList(ColorStateList.valueOf(Color.RED));
+                        }
+                        usage.setProgress(usage_int);
+                        layout.addView(usage);
+                    }
+                    else if(type.contains("Mem Clock"))
+                    {
+                        ProgressBar usage = new ProgressBar(getApplicationContext(),null, android.R.attr.progressBarStyleHorizontal);
+
+                        String usage_amount = type.split(":")[1].trim();
+                        double usage_double;
+
+                        try {
+                            usage_double = Double.parseDouble(usage_amount);
+                        }catch(NumberFormatException e)
+                        {
+                            usage_double = 0;
+                        }
+
+                        int usage_int = (int)(usage_double*100)/ mem_clock;
 
                         if(usage_int > 65)
                         {

@@ -16,11 +16,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Max Core Clock"
+            android:text="@string/coreString"
             android:id="@+id/textView"
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
-            android:textSize="20dp" />
+            android:textSize="20sp" />
 
         <EditText
             android:layout_width="100dp"
@@ -30,8 +30,32 @@
             android:id="@+id/maxCore"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
-            android:text="1060" />
+            android:text="@string/core" />
 
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/memString"
+            android:id="@+id/textView4"
+            android:textSize="20sp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true" />
+
+        <EditText
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/maxMem"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:text="@string/mem" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -41,9 +65,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Max Ram (MB)"
+            android:text="@string/ramString"
             android:id="@+id/textView2"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true" />
 
@@ -55,7 +79,7 @@
             android:id="@+id/maxRam"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
-            android:text="16384" />
+            android:text="@string/ram" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -65,9 +89,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Temp Limit (C)"
+            android:text="@string/tempString"
             android:id="@+id/textView3"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true" />
 
@@ -79,8 +103,10 @@
             android:id="@+id/maxTemp"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
-            android:text="100" />
+            android:text="@string/temp" />
     </RelativeLayout>
+
+
 
     <GridLayout
         android:layout_width="match_parent"

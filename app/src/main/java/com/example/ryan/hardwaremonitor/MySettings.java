@@ -16,6 +16,7 @@ public class MySettings extends AppCompatActivity {
     TextView core;
     TextView ram;
     TextView temp;
+    TextView mem;
     Settings mySettings;
     String IP;
     String mach_name;
@@ -37,6 +38,7 @@ public class MySettings extends AppCompatActivity {
         core = (TextView) findViewById(R.id.maxCore);
         ram = (TextView) findViewById(R.id.maxRam);
         temp = (TextView) findViewById(R.id.maxTemp);
+        mem = (TextView) findViewById(R.id.maxMem);
         setTitle("Settings");
         File file = new File(getFilesDir() + "/" + IP + ".bin");
         if(file.exists()) {
@@ -59,6 +61,7 @@ public class MySettings extends AppCompatActivity {
         core.setText(mySettings.max_core);
         ram.setText(mySettings.max_ram);
         temp.setText(mySettings.max_temp);
+        mem.setText(mySettings.max_mem);
     }
 
     public void saveSettings(View view)
@@ -69,6 +72,7 @@ public class MySettings extends AppCompatActivity {
             tempSettings.max_temp = temp.getText().toString();
             tempSettings.max_ram = ram.getText().toString();
             tempSettings.max_core = core.getText().toString();
+            tempSettings.max_mem = mem.getText().toString();
             tempSettings.IP = IP;
             tempSettings.mach_name = mach_name;
 

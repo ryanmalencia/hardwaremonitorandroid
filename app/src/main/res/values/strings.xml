@@ -3,6 +3,11 @@
     <string name="core">1000</string>
     <string name="temp">100</string>
     <string name="ram">16384</string>
+    <string name="mem">1500</string>
+    <string name="coreString">Max Core Clock</string>
+    <string name="tempString">Temp Limit (C)</string>
+    <string name="ramString">Max Ram (MB)</string>
+    <string name="memString">Max Mem Clock</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
 </resources>
